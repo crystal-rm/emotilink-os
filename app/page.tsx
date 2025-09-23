@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { 
   Brain, 
   Shield, 
@@ -16,11 +16,6 @@ import {
 
 export default function Home() {
   const [isConnected, setIsConnected] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const features = [
     { icon: Brain, title: 'AI-Powered Oracle', description: 'Advanced emotional data processing using machine learning algorithms.', color: 'text-blue-400' },
@@ -72,7 +67,7 @@ export default function Home() {
               <span className="gradient-text">EmotiLink OS</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-              The world's first blockchain-powered emotional intelligence platform
+              The world&apos;s first blockchain-powered emotional intelligence platform
               using advanced oracle technology for secure, real-time emotional data processing.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
