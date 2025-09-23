@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import React from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -9,7 +10,6 @@ export const metadata: Metadata = {
   description: 'A blockchain-powered platform for processing and validating emotional data using advanced oracle technology.',
   keywords: ['blockchain', 'oracle', 'emotional intelligence', 'AI', 'DeFi', 'Polygon'],
   authors: [{ name: 'EmotiLink OS Team' }],
-  viewport: 'width=device-width, initial-scale=1',
   robots: 'index, follow',
   openGraph: {
     title: 'EmotiLink OS - Oracle-based Emotional Intelligence Platform',
@@ -22,6 +22,11 @@ export const metadata: Metadata = {
     title: 'EmotiLink OS - Oracle-based Emotional Intelligence Platform',
     description: 'A blockchain-powered platform for processing and validating emotional data using advanced oracle technology.',
   },
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({

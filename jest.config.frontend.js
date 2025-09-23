@@ -8,8 +8,8 @@ const createJestConfig = nextJest({
 // Add any custom config to be passed to Jest
 const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  testEnvironment: 'node', // Changed from jsdom to node for Hardhat tests
-  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
+  testEnvironment: 'jest-environment-jsdom',
+  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/', '<rootDir>/test/'],
   moduleNameMapping: {
     '^@/(.*)$': '<rootDir>/$1',
   },
@@ -21,11 +21,6 @@ const customJestConfig = {
     '!**/*.d.ts',
     '!**/node_modules/**',
   ],
-  // Add global setup for TextEncoder/TextDecoder
-  globals: {
-    TextEncoder: TextEncoder,
-    TextDecoder: TextDecoder,
-  },
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
