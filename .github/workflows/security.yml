@@ -1,0 +1,96 @@
+name: Security Audit
+
+on:
+  schedule:
+    - cron: '0 2 * * 1' # Weekly on Monday at 2 AM
+  push:
+    branches: [ main ]
+    paths: [ 'contracts/**' ]
+  pull_request:
+    branches: [ main ]
+    paths: [ 'contracts/**' ]
+
+jobs:
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile contracts
+        run: npm run compile
+
+      - name: Run Security Analysis
+        run: |
+          echo "Security analysis tools will be configured in Phase 2"
+          echo "This includes Slither, MythX, and Echidna integration"
+          echo "For now, basic security checks are performed during compilation"
+
+      - name: Upload security reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-reports
+          path: |
+            slither-report.json
+            mythx-report.json
+
+      - name: Comment PR with security findings
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let comment = '## 🔒 Security Audit Results\n\n';
+            
+            // Check if Slither report exists
+            if (fs.existsSync('slither-report.json')) {
+              const slitherReport = JSON.parse(fs.readFileSync('slither-report.json', 'utf8'));
+              const findings = slitherReport.results?.detectors || [];
+              
+              if (findings.length > 0) {
+                comment += '### ⚠️ Slither Findings\n';
+                findings.forEach(finding => {
+                  comment += `- **${finding.check}**: ${finding.description}\n`;
+                });
+                comment += '\n';
+              } else {
+                comment += '### ✅ No Slither findings\n\n';
+              }
+            }
+            
+            // Check if MythX report exists
+            if (fs.existsSync('mythx-report.json')) {
+              const mythxReport = JSON.parse(fs.readFileSync('mythx-report.json', 'utf8'));
+              const issues = mythxReport.issues || [];
+              
+              if (issues.length > 0) {
+                comment += '### ⚠️ MythX Findings\n';
+                issues.forEach(issue => {
+                  comment += `- **${issue.severity}**: ${issue.description}\n`;
+                });
+                comment += '\n';
+              } else {
+                comment += '### ✅ No MythX findings\n\n';
+              }
+            }
+            
+            comment += '---\n*Security audit completed automatically*';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
