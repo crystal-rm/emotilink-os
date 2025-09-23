@@ -79,7 +79,8 @@ describe("EMOTI Token", function () {
     it("Should reject non-owner from setting oracle", async function () {
       await expect(
         emotiToken.connect(user1).setOracle(user2.address)
-      ).to.be.revertedWith("Ownable: caller is not the owner");
+      ).to.be.revertedWithCustomError(emotiToken, "OwnableUnauthorizedAccount")
+        .withArgs(user1.address);
     });
   });
 
@@ -95,7 +96,8 @@ describe("EMOTI Token", function () {
     it("Should reject non-owner from pausing", async function () {
       await expect(
         emotiToken.connect(user1).pause()
-      ).to.be.revertedWith("Ownable: caller is not the owner");
+      ).to.be.revertedWithCustomError(emotiToken, "OwnableUnauthorizedAccount")
+        .withArgs(user1.address);
     });
   });
 });
