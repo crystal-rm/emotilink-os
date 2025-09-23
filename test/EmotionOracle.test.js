@@ -35,15 +35,19 @@ describe("EmotionOracle", function () {
       const confidence = 85;
       const context = "Feeling great after completing a project";
 
-      await expect(
-        emotionOracle.connect(user1).submitEmotionData(
-          emotionType,
-          intensity,
-          confidence,
-          context
-        )
-      ).to.emit(emotionOracle, "EmotionDataSubmitted")
-        .withArgs(1, user1.address, emotionType, intensity, await getBlockTimestamp());
+      const tx = await emotionOracle.connect(user1).submitEmotionData(
+        emotionType,
+        intensity,
+        confidence,
+        context
+      );
+      
+      const receipt = await tx.wait();
+      const block = await ethers.provider.getBlock(receipt.blockNumber);
+      
+      await expect(tx)
+        .to.emit(emotionOracle, "EmotionDataSubmitted")
+        .withArgs(1, user1.address, emotionType, intensity, block.timestamp);
 
       const data = await emotionOracle.getEmotionData(1);
       expect(data.emotionType).to.equal(emotionType);
@@ -91,10 +95,14 @@ describe("EmotionOracle", function () {
     it("Should allow users to register as validators", async function () {
       const stakeAmount = ethers.parseEther("0.1");
 
-      await expect(
-        emotionOracle.connect(validator1).registerValidator({ value: stakeAmount })
-      ).to.emit(emotionOracle, "ValidatorRegistered")
-        .withArgs(validator1.address, stakeAmount, await getBlockTimestamp());
+      const tx = await emotionOracle.connect(validator1).registerValidator({ value: stakeAmount });
+      
+      const receipt = await tx.wait();
+      const block = await ethers.provider.getBlock(receipt.blockNumber);
+      
+      await expect(tx)
+        .to.emit(emotionOracle, "ValidatorRegistered")
+        .withArgs(validator1.address, stakeAmount, block.timestamp);
 
       const validator = await emotionOracle.getValidator(validator1.address);
       expect(validator.isActive).to.be.true;
@@ -132,10 +140,14 @@ describe("EmotionOracle", function () {
     });
 
     it("Should allow validators to validate data", async function () {
-      await expect(
-        emotionOracle.connect(validator1).validateEmotionData(1, true)
-      ).to.emit(emotionOracle, "EmotionDataValidated")
-        .withArgs(1, validator1.address, true, await getBlockTimestamp());
+      const tx = await emotionOracle.connect(validator1).validateEmotionData(1, true);
+      
+      const receipt = await tx.wait();
+      const block = await ethers.provider.getBlock(receipt.blockNumber);
+      
+      await expect(tx)
+        .to.emit(emotionOracle, "EmotionDataValidated")
+        .withArgs(1, validator1.address, true, block.timestamp);
 
       const data = await emotionOracle.getEmotionData(1);
       expect(data.isValidated).to.be.true;
@@ -189,7 +201,8 @@ describe("EmotionOracle", function () {
     it("Should reject non-owner from calling owner functions", async function () {
       await expect(
         emotionOracle.connect(user1).setMinimumStake(ethers.parseEther("0.2"))
-      ).to.be.revertedWith("Ownable: caller is not the owner");
+      ).to.be.revertedWithCustomError(emotionOracle, "OwnableUnauthorizedAccount")
+        .withArgs(user1.address);
     });
   });
 
