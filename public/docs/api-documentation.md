@@ -482,36 +482,45 @@ alchemy.ws.on(filter, (log) => {
 
 ## 🔧 Configuration
 
+### ⚠️ Security Notice
+**All API keys and sensitive information in this documentation are example values for security purposes. Replace with your actual credentials when configuring your environment.**
+
+#### How to Get Real API Keys:
+1. **Alchemy API Key**: Sign up at [alchemy.com](https://alchemy.com) and create a new app
+2. **Copy the API key** from your Alchemy dashboard
+3. **Replace `your_alchemy_api_key_here`** with your actual API key
+4. **Never commit real API keys** to version control
+
 ### Environment Variables
 ```env
 # Alchemy Configuration
-ALCHEMY_API_KEY=Gc18loKVH6D9R4tmbyK5P
-NEXT_PUBLIC_ALCHEMY_API_KEY=Gc18loKVH6D9R4tmbyK5P
+ALCHEMY_API_KEY=your_alchemy_api_key_here
+NEXT_PUBLIC_ALCHEMY_API_KEY=your_alchemy_api_key_here
 
 # Network Configuration
 NEXT_PUBLIC_NETWORK=polygon-mumbai
-NEXT_PUBLIC_CHAIN_ID=80001
+NEXT_PUBLIC_CHAIN_ID=*****
 
 # Contract Addresses
-NEXT_PUBLIC_EMOTI_TOKEN_ADDRESS=0x...
-NEXT_PUBLIC_EMOTION_ORACLE_ADDRESS=0x...
-NEXT_PUBLIC_EMOTION_VALIDATION_ADDRESS=0x...
-NEXT_PUBLIC_EMOTION_DATA_STORAGE_ADDRESS=0x...
+NEXT_PUBLIC_EMOTI_TOKEN_ADDRESS=0x1234567890123456789012345678901234567890
+NEXT_PUBLIC_EMOTION_ORACLE_ADDRESS=0x2345678901234567890123456789012345678901
+NEXT_PUBLIC_EMOTION_VALIDATION_ADDRESS=0x3456789012345678901234567890123456789012
+NEXT_PUBLIC_EMOTION_DATA_STORAGE_ADDRESS=0x4567890123456789012345678901234567890123
 ```
 
 ### Network Configuration
 ```typescript
 export const networkConfig = {
   polygonMumbai: {
-    chainId: 80001,
+    chainId: *****,
     name: 'Polygon Mumbai',
-    rpcUrl: 'https://polygon-mumbai.g.alchemy.com/v2/Gc18loKVH6D9R4tmbyK5P',
+    rpcUrl: 'https://polygon-mumbai.g.alchemy.com/v2/your_alchemy_api_key_here',
     blockExplorer: 'https://mumbai.polygonscan.com',
   },
   polygonMainnet: {
-    chainId: 137,
+    chainId: ***,
     name: 'Polygon Mainnet',
-    rpcUrl: 'https://polygon-mainnet.g.alchemy.com/v2/Gc18loKVH6D9R4tmbyK5P',
+    rpcUrl: 'https://polygon-mainnet.g.alchemy.com/v2/your_alchemy_api_key_here',
     blockExplorer: 'https://polygonscan.com',
   },
 };
@@ -559,19 +568,3 @@ async function completeEmotionWorkflow() {
     console.error("Workflow error:", error);
   }
 }
-```
-
-## 🆘 Support
-
-For technical support and questions:
-
-- **Email**: contact@emotilinkos.com
-- **Discord**: [Join our community](https://discord.gg/emotilink)
-- **GitHub**: [Report issues](https://github.com/emotilink-os/emotilink-os/issues)
-- **Documentation**: [Full docs](https://docs.emotilinkos.com)
-
----
-
-**Last Updated**: [Current Date]  
-**Version**: 1.0.0  
-**Maintained by**: EmotiLink OS Development Team
