@@ -8,7 +8,6 @@ import {
   Search, 
   Filter,
   Calendar,
-  User,
   ArrowLeft,
   Brain
 } from 'lucide-react';
@@ -45,13 +44,11 @@ export default function DocumentsPage() {
           setDocuments(data.documents);
           setFilteredDocs(data.documents);
         } else {
-          console.error('Error fetching documents:', data.error);
           // Fallback to empty array if API fails
           setDocuments([]);
           setFilteredDocs([]);
         }
-      } catch (error) {
-        console.error('Error fetching documents:', error);
+      } catch {
         setDocuments([]);
         setFilteredDocs([]);
       } finally {
@@ -97,11 +94,9 @@ export default function DocumentsPage() {
         
         await downloadPDF(data.content, doc.name, pdfOptions);
       } else {
-        console.error('Error fetching document:', data.error);
         alert('Failed to load document for PDF generation.');
       }
-    } catch (error) {
-      console.error('Error generating PDF:', error);
+    } catch {
       alert('Failed to generate PDF. Please try again.');
     }
   };
@@ -262,12 +257,10 @@ function DocumentViewer({ document, onClose }: DocumentViewerProps) {
         if (response.ok) {
           setContent(data.content);
         } else {
-          console.error('Error loading document:', data.error);
-          setContent(`# ${document.name}\n\nError loading document: ${data.error}`);
+          setContent(`# ${document.name}\n\nError loading document. Please try again.`);
         }
-      } catch (error) {
-        console.error('Error loading document:', error);
-        setContent(`# ${document.name}\n\nError loading document: ${error}`);
+      } catch {
+        setContent(`# ${document.name}\n\nError loading document. Please try again.`);
       } finally {
         setLoading(false);
       }
@@ -289,8 +282,7 @@ function DocumentViewer({ document, onClose }: DocumentViewerProps) {
       };
       
       await downloadPDF(content, document.name, pdfOptions);
-    } catch (error) {
-      console.error('Error generating PDF:', error);
+    } catch {
       alert('Failed to generate PDF. Please try again.');
     } finally {
       setGeneratingPDF(false);
