@@ -40,7 +40,7 @@
     "fork:sepolia": "hardhat node --fork https://eth-sepolia.g.alchemy.com/v2/Gc18loKVH6D9R4tmbyK5P"
   },
   "dependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
     "@openzeppelin/contracts": "^5.4.0",
     "@types/jspdf": "^1.3.3",
     "@types/node": "^20.0.0",
