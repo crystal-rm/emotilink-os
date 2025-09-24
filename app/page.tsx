@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { 
   Brain, 
   Shield, 
@@ -47,7 +48,7 @@ export default function Home() {
               <a href="#features" className="text-gray-300 hover:text-white transition-colors">Features</a>
               <a href="#how-it-works" className="text-gray-300 hover:text-white transition-colors">How it Works</a>
               <a href="#analytics" className="text-gray-300 hover:text-white transition-colors">Analytics</a>
-              <a href="#docs" className="text-gray-300 hover:text-white transition-colors">Docs</a>
+              <Link href="/docs" className="text-gray-300 hover:text-white transition-colors">Docs</Link>
             </nav>
             <button 
               className={`btn-primary ${isConnected ? 'bg-green-600 hover:bg-green-700' : ''}`}
