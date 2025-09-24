@@ -8,12 +8,18 @@ async function main() {
   const [deployer] = await ethers.getSigners();
   console.log("Deploying contracts with account:", deployer.address);
   
-  // Check balance
-  const balance = await deployer.getBalance();
+  // Get network information
+  const network = await ethers.provider.getNetwork();
+  console.log("Network:", network.name, `(Chain ID: ${Number(network.chainId)})`);
+  
+  // Check balance using ethers.js v6 syntax
+  const balance = await ethers.provider.getBalance(deployer.address);
   console.log("Account balance:", ethers.formatEther(balance), "ETH");
   
-  if (balance < ethers.parseEther("0.1")) {
-    throw new Error("Insufficient balance for deployment");
+  // Check if we have sufficient balance for deployment
+  const minBalance = network.chainId === 1337n ? ethers.parseEther("0.1") : ethers.parseEther("0.01");
+  if (balance < minBalance) {
+    throw new Error(`Insufficient balance for deployment. Required: ${ethers.formatEther(minBalance)} ETH`);
   }
   
   console.log("\n📋 Phase 1 Deployment Plan:");
@@ -65,7 +71,6 @@ async function main() {
   console.log("✅ Set oracle address in EMOTI token");
   
   // Step 6: Verify contracts on PolygonScan (if not on local network)
-  const network = await ethers.provider.getNetwork();
   if (network.chainId !== 1337n) {
     console.log("\n🔍 Step 6: Verifying contracts on PolygonScan...");
     console.log("Waiting for block confirmations...");
